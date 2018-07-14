@@ -9,12 +9,18 @@
 #define SRC_INCLUDES_H_
 
 #include <algorithm>
+#include <cstdlib>
 #include <deque>
 #include <iostream>
+#include <queue>
 #include <sstream>
 #include <stack>
 #include <vector>
 
 using namespace std;
+
+typedef unsigned int ui;
+
+#define FOR(i, n) for (int i = 0; i < n; ++i)
 
 #endif /* SRC_INCLUDES_H_ */

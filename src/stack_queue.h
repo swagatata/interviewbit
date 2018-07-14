@@ -279,4 +279,70 @@ void testrainWaterTrapped() {
 	cout << "Test 1 "<< (rainWaterTrapped(v) == 6 ? "Passed" : "Failed") << endl;
 }
 
+// return min mults needed to get x to the n
+// Last problem in stacks and queues section of
+// Elements of Programming Interviews
+unsigned int min_multiplications(unsigned int n) {
+	if (n == 1) return 0;
+	if (n == 2) return 1;
+
+	vector<int> s;
+	s.push_back(1);
+	s.push_back(2);
+
+	vector<bool> v(n+1, false);
+	v[1] = true;
+	v[2] = true;
+
+	queue<vector<int> > q;
+	q.push(s);
+	while (!q.empty()) {
+		int qsize = q.size();
+		for (int i = 0; i < qsize; ++i) {
+			auto topv = q.front(); q.pop();
+
+//			cout << "printing top v" << endl;
+//			pv(topv);
+
+			// all squares and all possible 2 multiplications
+			for (int e : topv) {
+				if (e*e <= n) {
+					if (!v[e*e]) {
+						cout << "visiting " << e*e << endl;
+						if (e*e == n) {
+							pv(topv);
+							return topv.size();
+						}
+
+						vector<int> temp = topv;
+						temp.push_back(e*e);
+
+						v[e*e] = true;
+						q.push(temp);
+					}
+				}
+			}
+			for (int i = 0; i < topv.size() - 1; ++i) {
+				unsigned int e = topv[i] + topv.back();
+
+				if (e > n) continue;
+
+				if (!v[e]) {
+					cout << "visiting " << e << endl;
+					if (e == n) {
+						pv(topv);
+						return topv.size();
+					}
+					vector<int> temp = topv;
+					temp.push_back(e);
+
+					v[e] = true;
+					q.push(temp);
+				}
+			}
+			topv.clear();
+		}
+	}
+}
+
 #endif /* SRC_STACK_QUEUE_H_ */
