@@ -17,6 +17,8 @@
 #include <stack>
 #include <vector>
 
+#include "ds/tree.h"
+
 using namespace std;
 
 typedef unsigned int ui;
