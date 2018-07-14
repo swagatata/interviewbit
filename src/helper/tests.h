@@ -21,5 +21,13 @@ bool compare_vectors(vector<T> &v1, vector<T> &v2) {
 	return true;
 }
 
+template<class T>
+void pv(vector<T> v) {
+	for (auto a : v)
+		cout << a << ",";
+
+	cout << endl;
+}
+
 
 #endif /* SRC_HELPER_TESTS_H_ */
