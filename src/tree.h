@@ -12,6 +12,11 @@
 #include "includes.h"
 #include "helper/tree.h"
 
+/**
+ * https://www.interviewbit.com/problems/sorted-array-to-balanced-bst/
+ *
+ * *******************************************************************
+ */
 TreeNode *sorted_array_to_bbst_recursive(const vector<int> &v, size_t l, size_t r) {
 	if (l >= r) return nullptr;
 
@@ -29,7 +34,7 @@ TreeNode *sorted_array_to_bbst_recursive(const vector<int> &v, size_t l, size_t 
 	return root;
 }
 
-// https://www.interviewbit.com/problems/sorted-array-to-balanced-bst/
+
 TreeNode *sorted_array_to_bbst(const vector<int> &v) {
 	return sorted_array_to_bbst_recursive(v, 0, v.size());
 }
@@ -47,4 +52,18 @@ void test_sorted_array_to_bbst() {
 			<< (compare_vectors<int>(act, v) ? "Passed" : "Failed") << endl;
 }
 
+/**
+ * https://www.interviewbit.com/problems/path-sum/
+ *
+ * *******************************************************************
+ */
+int hasPathSum(TreeNode* A, int B) {
+	if (A == nullptr) return false;
+
+	if (A->val == B)
+		if (A->left == nullptr && A->right == nullptr)
+			return true;
+
+	return hasPathSum(A->left, B - A->val) || hasPathSum(A->right, B - A->val);
+}
 #endif /* SRC_TREE_H_ */
