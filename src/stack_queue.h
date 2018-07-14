@@ -54,4 +54,38 @@ void test_simplify_path() {
 	cout << "Test 7 "<< ((simplify_path("/a/./b/../../c/..").compare("/") == 0) ? "Passed" : "Failed") << endl;
 }
 
+// https://www.interviewbit.com/problems/redundant-braces/
+int redundant_braces(string s) {
+	stack<char> st;
+
+	for (char c : s) {
+		// cout << "char is " << c << endl;
+		if (c == '(') {
+			st.push('(');
+		} else if (c == ')') {
+			// is there content?
+			// if not this is redundant
+			if (st.top() == 'o') {
+				st.pop(); // pop operator
+				st.pop(); // pop left parentheses
+			} else {
+				return 1;
+			}
+		} else if (c == ' ') {
+			continue;
+		} else if (c == '+' || c == '-' || c == '*' || c == '/'){
+			st.push('o');
+		}
+	}
+
+	return 0;
+}
+
+void test_redundant_braces() {
+	cout << "Test 1 "<< (redundant_braces("((a + b))") == 1 ? "Passed" : "Failed") << endl;
+	cout << "Test 2 "<< (redundant_braces("(a + (a + b))") == 0 ? "Passed" : "Failed") << endl;
+	cout << "Test 3 "<< (redundant_braces("()") == 1 ? "Passed" : "Failed") << endl;
+	cout << "Test 4 "<< (redundant_braces("((a))") == 1 ? "Passed" : "Failed") << endl;
+	cout << "Test 5 "<< (redundant_braces("(a + ((c) + b))") == 1 ? "Passed" : "Failed") << endl;
+}
 #endif /* SRC_STACK_QUEUE_H_ */
