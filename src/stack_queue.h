@@ -10,6 +10,7 @@
 
 #include "includes.h"
 #include "helper/string.h"
+#include "helper/tests.h"
 
 string simplify_path(string s) {
 	auto vs = split(s, '/');
@@ -88,4 +89,30 @@ void test_redundant_braces() {
 	cout << "Test 4 "<< (redundant_braces("((a))") == 1 ? "Passed" : "Failed") << endl;
 	cout << "Test 5 "<< (redundant_braces("(a + ((c) + b))") == 1 ? "Passed" : "Failed") << endl;
 }
+
+// https://www.interviewbit.com/problems/nearest-smaller-element/
+vector<int> prev_smaller(vector<int> &A) {
+	vector<int> ps(A.size());
+	ps[0] = -1;
+
+	stack<int> st;
+	st.push(A[0]);
+
+	for (int i = 1; i < A.size(); ++i) {
+		int a = A[i];
+
+		while (st.size > 0 && a <= st.top()) {
+			st.pop();
+		}
+		if (st.size() > 0)
+			ps[i] = st.top();
+		else
+			ps[i] = -1;
+
+		st.push(a);
+	}
+
+	return ps;
+}
+
 #endif /* SRC_STACK_QUEUE_H_ */
