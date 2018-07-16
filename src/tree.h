@@ -66,4 +66,24 @@ int hasPathSum(TreeNode* A, int B) {
 
 	return hasPathSum(A->left, B - A->val) || hasPathSum(A->right, B - A->val);
 }
+
+int b = 0;
+int bval;
+void kthsmallest_recursive(TreeNode* A, int B) {
+	if (A == nullptr) return;
+
+	kthsmallest_recursive(A->left, B);
+	++b;
+
+	if (B == b) {
+		bval = A->val;
+		return;
+	}
+	kthsmallest_recursive(A->right, B);
+}
+
+int kthsmallest(TreeNode* A, int B) {
+	kthsmallest_recursive(A, B);
+	return bval;
+}
 #endif /* SRC_TREE_H_ */
