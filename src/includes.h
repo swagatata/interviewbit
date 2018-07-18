@@ -22,6 +22,7 @@
 using namespace std;
 
 typedef unsigned int ui;
+typedef unsigned long long ull;
 
 #define FOR(i, n) for (int i = 0; i < n; ++i)
 
