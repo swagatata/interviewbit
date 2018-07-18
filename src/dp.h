@@ -9,6 +9,7 @@
 #define SRC_DP_H_
 
 #include "includes.h"
+#include "helper/math.h"
 
 /**
  * n : should be greater than 0, behavior undefined otherwise
@@ -117,6 +118,46 @@ void test_subset_sum() {
 	v.clear();
 	cout << "(Test 2) "<< (!subset_sum(v, 9)  ? "Passed" : "Failed") << endl;
 	cout << "(Test 3) "<< (subset_sum(v, 0)  ? "Passed" : "Failed") << endl;
+}
+
+// https://www.geeksforgeeks.org/subset-sum-divisible-m/
+bool subset_sum_divisible(vector<int> v, ui sum) {
+	bool ** ssd;
+
+	ssd = new bool*[v.size() + 1];
+	FOR(i, (v.size()+1)) {
+		ssd[i] = new bool[sum];
+	}
+
+	FOR(i, sum) {
+		ssd[0][i] = false;
+		ssd[1][i] = false;
+	}
+	ssd[1][v[0]%sum] = true;
+
+	for (ui i = 2; i <= v.size(); ++i) {
+		for (ui j = 0; j < sum; ++j) {
+			ssd[i][j] = ssd[i-1][j] || ssd[i-1][mod(j-v[i-1], sum)] || (j == v[i-1]%sum);
+			// cout << "ssd[" << i << "][" << j << "] = " << ssd[i][j] << endl;
+		}
+	}
+
+	return ssd[v.size()][0];
+}
+
+void test_subset_sum_divisible() {
+	int a[] = {3, 34, 4, 12, 5, 2};
+	vector<int> v(a, a + 6);
+
+	cout << "(Test 1) "<< (subset_sum_divisible(v, 9)  ? "Passed" : "Failed") << endl;
+
+	int b[] = {3, 1, 7, 5};
+	vector<int> vb(b, b + 4);
+	cout << "(Test 2) "<< (subset_sum_divisible(vb, 6)  ? "Passed" : "Failed") << endl;
+
+	int c[] = {1, 6};
+	vector<int> vc(c, c + 2);
+	cout << "(Test 3) "<< (!subset_sum_divisible(vc, 5)  ? "Passed" : "Failed") << endl;
 }
 
 #endif /* SRC_DP_H_ */
