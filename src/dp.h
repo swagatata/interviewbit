@@ -160,4 +160,102 @@ void test_subset_sum_divisible() {
 	cout << "(Test 3) "<< (!subset_sum_divisible(vc, 5)  ? "Passed" : "Failed") << endl;
 }
 
+ui longest_inc_subsequence_length(vector<int> &v) {
+	if (v.size() < 2) return v.size();
+
+	ui * lisl = new ui[v.size()];
+
+	lisl[0] = 1;
+	ui max_l = 0, max_ll =0;
+	for (ui i = 1; i < v.size(); ++i) {
+		max_l = 1;
+		for (ui j = 0; j < i; ++j) {
+			if (v[j] <= v[i]) {
+				ui l = 1 + lisl[j];
+				if (l > max_l) {
+					max_l = l;
+					if (max_l > max_ll)
+						max_ll = max_l;
+				}
+			}
+		}
+		lisl[i] = max_l;
+	}
+
+	return max_ll;
+}
+
+void test_longest_inc_subsequence_length() {
+	int a[] = {10, 22, 9, 33, 21, 50, 41, 60, 80};
+	vector<int> v(a, a+9);
+
+	cout << "(Test 1) "<< (longest_inc_subsequence_length(v) == 6  ? "Passed" : "Failed") << endl;
+}
+
+int numDecodings(string A) {
+	ui n = A.size();
+	if (n == 0) return 0;
+	if (n == 1) return 1;
+
+	vector<ui> nd(A.size());
+
+	nd[0] = 1;
+	for (ui i = 1; i < n; ++i) {
+		nd[i] = 0;
+		if (A[i] != '0') {
+			nd[i] += nd[i-1];
+		}
+
+		// cout << "nd[i] " << nd[i] << endl;
+
+
+		string sub = A.substr(i-1, 2);
+		// cout << "sub " << sub << endl;
+		int chr = stoi(sub, nullptr, 10);
+		// cout << "chr " << chr << endl;
+
+		if (chr > 9 && chr < 27) {
+			if (i >= 2) {
+				nd[i] += nd[i-2];
+			} else {
+				nd[i] += 1;
+			}
+		}
+
+		// cout << "nd[i] " << nd[i] << endl;
+	}
+
+	return nd[n-1];
+}
+
+void test_numDecodings() {
+	cout << "(Test 1) "<< (numDecodings("12") == 2  ? "Passed" : "Failed") << endl;
+}
+
+int maxProfit(const vector<int> &A) {
+	if (A.size() < 2) return 0;
+
+	int min = A[0];
+	int profit;
+	int max_profit = 0;
+	for (int i = 1; i < A.size(); ++i) {
+		if (A[i] > min) {
+			profit = A[i] - min;
+			if (profit > max_profit)
+				max_profit = profit;
+		} else {
+			min = A[i];
+		}
+	}
+
+	return max_profit;
+}
+
+void test_maxProfit() {
+	int a[] = {1, 2};
+	vector<int> v(a, a+2);
+
+	cout << "(Test 1) "<< (maxProfit(v) == 1  ? "Passed" : "Failed") << endl;
+}
+
 #endif /* SRC_DP_H_ */
