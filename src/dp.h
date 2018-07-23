@@ -311,4 +311,67 @@ void test_maxProfit() {
 	cout << "(Test 1) "<< (maxProfitAlt(v) == 552236226  ? "Passed" : "Failed") << endl;
 }
 
+/**
+ * https://www.interviewbit.com/problems/best-time-to-buy-and-sell-stocks-iii/
+ * Only two transactions allowed
+ * A buy needs to be after a sell, not on the same day.
+ */
+int maxProfit3(const vector<int> &prices) {
+	size_t n = prices.size();
+	if (n < 2) return 0;
+
+	// maintain DP1 & DP2
+	vector<int> DP1(n);
+	vector<int> DP2(n);
+
+	int max_right = prices[n-1], profit;
+	int max_value = prices[n-1];
+	DP1[n-1] = 0;
+	DP2[n-1] = 0;
+
+	for (int i = n-2; i >=0; --i) {
+		profit = 0;
+		if (max_right > prices[i]) {
+			profit = max_right - prices[i];
+		}
+
+		DP2[i] = DP1[i] = max(profit, DP1[i+1]);
+
+		if (DP2[i+1] > DP2[i]) {
+			DP2[i] = DP2[i+1];
+		}
+
+		int buy_value = max_value - prices[i];
+		if (buy_value > DP2[i]) {
+			DP2[i] = buy_value;
+		}
+
+		int value = prices[i] + DP1[i+1];
+		if (value > max_value) max_value = value;
+		if (prices[i] > max_right) max_right = prices[i];
+
+//		cout << "DP1[" << i << "] : " << DP1[i] << endl;
+//		cout << "DP2[" << i << "] : " << DP2[i] << endl << endl;
+	}
+
+	return DP2[0];
+}
+
+void test_maxProfit3() {
+	int a[] = {3,3,5,0,0,3,1,4};
+	vector<int> v(a, a+8);
+
+	cout << "(Test 1) "<< (maxProfit3(v) == 6  ? "Passed" : "Failed") << endl;
+
+	int b[] = {1,2,3,4,5};
+	vector<int> vb(b, b+5);
+
+	cout << "(Test 2) "<< (maxProfit3(vb) == 4  ? "Passed" : "Failed") << endl;
+
+	int c[] = {7,6,4,3,1};
+	vector<int> vc(c, c+5);
+
+	cout << "(Test 3) "<< (maxProfit3(vc) == 0  ? "Passed" : "Failed") << endl;
+}
+
 #endif /* SRC_DP_H_ */
