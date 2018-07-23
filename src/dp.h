@@ -422,4 +422,50 @@ void test_chordCount() {
 }
 
 
-#endif /* SRC_DP_H_ */
+/**
+ * https://www.interviewbit.com/problems/jump-game-array/
+ */
+int minJumps(const vector<int> &jump) {
+	size_t n = jump.size();
+	if (n < 1) return 0;
+
+	vector<int> dp(n);
+	dp[n-1] = 0;
+
+	for (int i = n-2; i >= 0; --i) {
+		if (i + jump[i] >= n-1) {
+			dp[i] = 1;
+		} else if (jump[i] < 1) {
+			dp[i] = -1;
+		} else {
+			int min = n;
+			for (int j = 1; j <= jump[i]; ++j) {
+				if (dp[i+j] != -1) {
+					if (1+dp[i+j] < min) {
+						min = 1+dp[i+j];
+					}
+				}
+			}
+			if (min != n)
+				dp[i] = min;
+			else
+				dp[i] = -1;
+		}
+
+		// cout << "dp[" << i << "] : " << dp[i] << endl;
+	}
+
+	return dp[0] != -1;
+}
+
+void test_minJumps() {
+	int a[] = {1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9};
+	vector<int> v(a, a+11);
+	cout << "(Test 1) "<< (minJumps(v) == 1  ? "Passed" : "Failed") << endl;
+
+	int b[] = {3,2,1,0,4};
+	vector<int> vb(b, b+5);
+	cout << "(Test 2) "<< (minJumps(vb) == 0  ? "Passed" : "Failed") << endl;
+
+}
+
