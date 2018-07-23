@@ -374,4 +374,52 @@ void test_maxProfit3() {
 	cout << "(Test 3) "<< (maxProfit3(vc) == 0  ? "Passed" : "Failed") << endl;
 }
 
+/**
+ * https://www.interviewbit.com/problems/intersecting-chords-in-a-circle/
+ */
+vector<ll> chords(1000);
+int chordCountRecursive(int A) {
+	if (chords[A] > 0) return chords[A];
+	if (A == 0) {
+		chords[A] = 1;
+		return 1;
+	}
+
+	ull total = 0;
+	for (size_t i = 0; i < A; ++i) {
+		total = (total + (chordCountRecursive(i) * chordCountRecursive(A - i - 1)) % 1000000007);
+	}
+
+	if (A < chords.size()) {
+		chords[A] = total;
+	}
+
+	return total;
+}
+
+int chordCount(int A) {
+	vector<ll> chords(A+1);
+	chords[0] = 1;
+
+	ull total;
+	for (size_t i = 1; i <= A; ++i) {
+		total = 0;
+		for (size_t j = 0; j < i; ++j) {
+			total = (total + chords[j]*chords[i - j - 1]) % 1000000007;
+		}
+		chords[i] = total;
+	}
+
+	return chords[A];
+}
+
+void test_chordCount() {
+	cout << "(Test 1) "<< (chordCount(0) == 1  ? "Passed" : "Failed") << endl;
+	cout << "(Test 2) "<< (chordCount(1) == 1  ? "Passed" : "Failed") << endl;
+	cout << "(Test 3) "<< (chordCount(2) == 2  ? "Passed" : "Failed") << endl;
+	cout << "(Test 4) "<< (chordCount(3) == 5  ? "Passed" : "Failed") << endl;
+	cout << chordCount(51) << endl ;
+}
+
+
 #endif /* SRC_DP_H_ */

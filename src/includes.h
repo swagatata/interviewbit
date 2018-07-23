@@ -21,6 +21,7 @@
 
 using namespace std;
 
+typedef long long ll;
 typedef unsigned int ui;
 typedef unsigned long long ull;
 
